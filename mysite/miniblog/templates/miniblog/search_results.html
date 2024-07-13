@@ -1,0 +1,9 @@
+{% extends 'miniblog/base.html' %}
+
+{% block content %}
+{% if object %}
+<h1>{{ object.title }}</h1>
+<p>{{ object.text|linebreaksbr }}</p>
+<p>{{ object.author|linebreaksbr }}</p>
+{% endif %}
+  {% endblock %}
