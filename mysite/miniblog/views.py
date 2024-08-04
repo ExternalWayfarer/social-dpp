@@ -1,42 +1,15 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse
+#from django.http import HttpResponse
 from django.utils import timezone
 from .models import Post
-from .forms import PostForm
-
-
+from .forms import PostForm, CommentForm
+from django.db.models import Q
+#from django.core.paginator import Paginator
   
-def index(request):
-    
 
-    return HttpResponse(f'''
-                        <p>Path: {request.path}</p>
-                        <a href="http://localhost:8000/contacts/">В контакты</a>
-                        
-                        <br><a href="http://localhost:8000/about/">в "о сайте"</a>
-                        <a href="http://localhost:8000">в "nahuy"</a>
-                        
-                        ''')
- 
-def about(request):
-    return HttpResponse(f'''
-                        <p>Path: {request.path}</p>
-                        <a href="http://localhost:8000/index/">Назад</a>''')
- 
-def contacts(request):
-    host = request.META["HTTP_HOST"] # получаем адрес сервера
-    user_agent = request.META["HTTP_USER_AGENT"]    # получаем данные браузера
-    path = request.path     # запрошенный путь
-
-
-    return HttpResponse(f'''<p>Host: {host}</p>
-                        <p>Path: {path}</p>
-                        <p>User-agent: {user_agent}</p>
-                        <a href="http://localhost:8000/index/">Назад</a>''')
-
-def user(request, name="Undefined"):
-    return HttpResponse(f"<h2>Имя: {name}</h2>")
-
+def user(request, pk):
+    user= get_object_or_404(Post, pk=pk)
+    return render(request, 'miniblog/user_profile.html', {'user': user})
 
 def post_list(request):
     posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
@@ -44,7 +17,23 @@ def post_list(request):
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    return render(request, 'miniblog/post_detail.html', {'post': post})
+    comments = post.comments.all
+    new_comment = None    # Comment posted
+    if request.method == 'POST':
+        comment_form = CommentForm(data=request.POST)
+        if comment_form.is_valid():
+            # Create Comment object but don't save to database yet
+            new_comment = comment_form.save(commit=False)
+            # Assign the current post to the comment
+            new_comment.post = post
+            # Save the comment to the database
+            new_comment.save()
+            return redirect('post_detail', pk=post.pk)
+    else: comment_form=CommentForm()
+    return render(request, 'miniblog/post_detail.html', {'post': post,
+                                                        'comments': comments,
+                                                        'new_comment': new_comment,
+                                                        'comment_form': comment_form})
 
 def post_new(request):
     if request.method == "POST":
@@ -59,7 +48,6 @@ def post_new(request):
         form = PostForm()
     return render(request, 'miniblog/post_edit.html', {'form': form})
 
-
 def post_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.method == "POST":
@@ -67,33 +55,25 @@ def post_edit(request, pk):
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
-            post.published_date = timezone.now()
+            post.updated_date = timezone.now()
             post.save()
             return redirect('post_detail', pk=post.pk)
     else:
         form = PostForm(instance=post)
     return render(request, 'miniblog/post_edit.html', {'form': form})
 
-#def search_detail(request, pk=None):
-#    post_object = None
-#    if pk is not None:
-#        post_object=Post.objects.get(pk=pk)
-#    context = {
-#        'object':post_object,
-#    }
-#    return render(request, 'miniblog/search_results.html', context=context)
 
 def search_results(request):
-    query = request.GET.get("q")
-    print(query)
-    post_object = None
-    if query is not None:
-        post_object=Post.objects.get(pk=query)
-    
+    search_query = request.GET.get("search", "")
 
-    context={'object':post_object}
-    return render(request, 'miniblog/search_results.html', context=context)
+    if search_query:
+        post_object=Post.objects.filter(Q(title__icontains = search_query) |Q(text__icontains = search_query))
+    else:
+        post_object= Post.objects.all
+    print(post_object)
+
+    return render(request, 'miniblog/search_results.html', {'post_object':post_object})
 
 
 
-#def post_search(request):
+

@@ -7,33 +7,44 @@
         <link rel="stylesheet" href="{% static 'miniblog/css/miniblog.css' %}">
         <link rel="icon" type="image/x-icon" href="{% static 'miniblog/img/favicon.ico' %}">
         <link href="https://fonts.googleapis.com/css?family=Lobster&subset=latin,cyrillic" rel="stylesheet" type="text/css">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
         <div class="page-header">
+            <div class="header-left">
+                <h1><a href="/">Content is in development</a></h1>
+            </div>
+            <div class="header-center">
+                <div class="search-box">
+
+                    <form action="{% url 'search_results' %}" method="get">
+                    <button class="btn-search" id="searchbar"><img src="/static/miniblog/img/search.svg" alt="Search"></button>
+                    <input type="text" name="search" class="input-search" placeholder="Type to Search...">
+                    </form>
+                </div>
+            </div>
+            <div class="header-right">
             {% if user.is_authenticated %}
                 <a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
             {% endif %}
-            
-            <h1><a href="/">Content is in development</a></h1>
+            <div class="account">
+                <h1><a href="/admin/">Account</a></h1>
+            </div>
+            </div>
+        </div>
 
-        </div>
-        <div class="account">
-            <h1><a href="/admin/">admin</a></h1>
-        </div>
-        <div>
-            <label for="searchbar">
-                <img src="/static/miniblog/img/search.svg" alt="Search">
-            </label>
-            <form action="{% url 'search_results' %}" method="get">
-            <input type="text" size="40" name="q" value="" id="searchbar">
-            <input type="submit" value="Search">
-            </form>
-        </div>
         <div class="content container">
             <div class="row">
+                <div class="col-md-2">
+                    <p>LEFT</p>
+                </div>
                 <div class="col-md-8">
                 {% block content %}
                 {% endblock %}
+                </div>
+                <div class="col-md-2">
+                    <p>RIGHT</p>
                 </div>
             </div>
         </div>

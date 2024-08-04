@@ -14,4 +14,33 @@
         <p>{{ post.text|linebreaksbr }}</p>
         <p>{{ post.author|linebreaksbr }}</p>
     </div>
+    <div class="card-body">
+        {% if new_comment %}
+        <div class="alert alert-success" role="alert">
+          Your comment is awaiting moderation
+        </div>
+        {% else %}
+        <h3>Leave a comment</h3>
+        <form method="post" style="margin-top: 1.3em;">
+          {{ comment_form.as_p }}
+          {% csrf_token %}
+          <button type="submit" class="btn btn-primary  btn-lg">Submit</button>
+        </form>
+        {% endif %}
+      </div>
+    <div>
+        {% for comment in comments %}
+        <div class="comments" style="padding: 10px;"> 
+         <p class="font-weight-bold"> 
+           {{ comment.author|linebreaksbr }} 
+           <span class=" text-muted font-weight-normal"> 
+             {{ comment.published_date }}
+            </span>
+          </p>
+          {{ comment.body | linebreaks }}
+        </div>
+        {% endfor %}
+    </div>
+
+
 {% endblock %}
