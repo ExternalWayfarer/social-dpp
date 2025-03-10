@@ -1,2 +1,6 @@
 # great-repo-name
-This is repo for my django project
+This is social network with posts, comments and etc
+
+USED TECHNOLOGIES:
+FRONTEND: REACT
+BACKEND: DJANGO

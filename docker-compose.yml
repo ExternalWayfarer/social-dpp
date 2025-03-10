@@ -1,0 +1,42 @@
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173" # Пробрасываем порт для Vite
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app-frontend # Монтируем директорию проекта в контейнер
+      - /app-frontend/node_modules # Исключаем монтирование node_modules
+
+
+  backend:
+    build:
+      context: ./mysite
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000" # Пробрасываем порт для NestJS
+    environment:
+      DATABASE_URL: "postgresql://father:1234@db:5432/motherbase"
+    depends_on:
+      - db
+    volumes:
+      - ./mysite:/app-backend # Монтируем директорию бэкенда
+
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: father
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: motherbase
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data # Храним данные базы данных в томе
+
+volumes:
+  db_data:
