@@ -2,6 +2,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 #from django.http import HttpResponse
 from django.utils import timezone
 from .models import Post
+from .serializers import PostSerializer
+from rest_framework import viewsets
 from .forms import PostForm, CommentForm
 from django.db.models import Q
 #from django.core.paginator import Paginator
@@ -75,5 +77,7 @@ def search_results(request):
     return render(request, 'miniblog/search_results.html', {'post_object':post_object})
 
 
-
+class PostViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
 
