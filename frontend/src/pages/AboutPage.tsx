@@ -1,15 +1,29 @@
 
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import api from '../services/api';
+
 
 function AboutPage() {
-  return (
-    <React.Fragment>
-  {/* Основной контент страницы */}
-      <main className="mt-16 p-4 space-y-8">
-        <h1 className="text-4xl font-bold">Welcome to AboutPage</h1>
-      </main>
-    </React.Fragment>
-  );
-}
+  
+    const [message, setMessage] = useState('');
+    useEffect(() => {
+      api.get('/test/hello').then(response => {
+        setMessage(response.data.message);
+      })
+      .catch(error => {
+        console.error('Error query', error);
+
+      });
+    }, []);
+    
+    return (
+      <div>
+        <h1>Backend answer:</h1>
+        <p>{message}</p>
+      </div>
+    );
+    
+    
+};
 
 export default AboutPage;

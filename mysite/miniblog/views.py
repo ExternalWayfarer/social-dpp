@@ -1,13 +1,19 @@
 from django.shortcuts import render, get_object_or_404, redirect
 #from django.http import HttpResponse
 from django.utils import timezone
-from .models import Post
-from .serializers import PostSerializer
-from rest_framework import viewsets
+from .models import Post, Comment, CustomUser
+from .serializers import PostSerializer, CommentSerializer, UserSerializer
+from rest_framework import viewsets, generics
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 from .forms import PostForm, CommentForm
 from django.db.models import Q
 #from django.core.paginator import Paginator
   
+
+@api_view(['GET'])
+def hello_world(request):
+    return Response({'message': 'Hello World!'})
 
 def user(request, pk):
     user= get_object_or_404(Post, pk=pk)
@@ -81,3 +87,15 @@ class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
+class CommentViewSet(viewsets.ModelViewSet):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+
+#class UserViewSet(viewsets.ModelViewSet):
+#    queryset = CustomUser.objects.all()
+#    serializer_class = UserSerializer
+
+
+class UserCreateViewSet(viewsets.ModelViewSet):
+    queryset = CustomUser.objects.all()
+    serializer_class = UserSerializer

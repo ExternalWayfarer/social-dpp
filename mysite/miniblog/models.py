@@ -46,6 +46,7 @@ class Comment(models.Model):
     
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
+    usermane = None
     email = models.EmailField(_("email address"), unique=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)

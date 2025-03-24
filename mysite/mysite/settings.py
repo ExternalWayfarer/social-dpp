@@ -139,5 +139,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = "miniblog.CustomUser" 
 
 CORS_ALLOWED_ORIGINS = [
-    "http://frontend:5173",
+    "http://localhost:5173",
+    "http://frontend:5173"
 ]

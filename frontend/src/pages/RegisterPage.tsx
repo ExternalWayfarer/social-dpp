@@ -1,13 +1,25 @@
 import React, { useState } from 'react';
+import api from "../services/api";
 
 const RegisterPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleRegister = (e: React.FormEvent) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     // Логика регистрации
-    console.log('Регистрация:', { email, password });
+    try {
+      const response = await api.post('/api/users/', {
+        email,
+        password
+      });
+     // return response.data;
+     console.log('User created succesfully', response.data);
+     alert("Registration complete")
+    } catch (error) {
+      console.error("Registration ERROR", error.response?.data);
+      alert(`Registration error ${error.response?.data?.detail || error.message}`)
+    }
   };
 
   return (
