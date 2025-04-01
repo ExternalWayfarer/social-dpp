@@ -7,12 +7,12 @@ function UsersPage() {
 
   // Получение пользователей при загрузке страницы
   useEffect(() => {
-    api.get('/users').then((response) => setUsers(response.data));
+    api.get('api/users/').then((response) => setUsers(response.data));
   }, []);
 
   // Добавление нового пользователя
   const addUser = () => {
-    api.post('/users', newUser).then((response) => {
+    api.post('api/users/', newUser).then((response) => {
       setUsers((prev) => [...prev, response.data]); // Обновляем список пользователей
       setNewUser({ email: '', password: '' }); // Очищаем форму
     });
@@ -24,7 +24,7 @@ function UsersPage() {
       <ul>
         {users.map((user) => (
           <li key={user.id}>
-            {user.email} ({user.email})
+            {user.email}
           </li>
         ))}
       </ul>

@@ -2,10 +2,7 @@ from rest_framework import serializers
 from .models import Post, Comment, CustomUser
 
 # model from models.py, this serializers will used in views.py
-class PostSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Post
-        fields = "__all__"
+
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
@@ -24,3 +21,9 @@ class UserSerializer(serializers.ModelSerializer):
             password = validated_data['password']
         )
         return user
+    
+class PostSerializer(serializers.ModelSerializer):
+    author = UserSerializer()
+    class Meta:
+        model = Post
+        fields = "__all__"

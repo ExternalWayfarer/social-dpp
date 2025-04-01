@@ -84,7 +84,7 @@ def search_results(request):
 
 
 class PostViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.all()
+    queryset = Post.objects.select_related('author').all()
     serializer_class = PostSerializer
 
 class CommentViewSet(viewsets.ModelViewSet):

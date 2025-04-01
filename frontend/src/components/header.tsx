@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import LoginModal from './loginmodal';
 import { useNavigate } from 'react-router-dom';
-import Dropdown from './dropdown';
+//import Dropdown from './dropdown';
 
 import SearchBar from './searchbar';
 
@@ -28,7 +28,7 @@ const Header = () => {
             {/* Логотип */}
                 <div className="flex items-center space-x-4">
                     <a href="/" className="text-2xl font-bold hover:text-blue-300">
-                        Home
+                        DPP-Social
                     </a>
      
 
@@ -38,7 +38,7 @@ const Header = () => {
         {/* Навигация */}
           <nav  className="flex items-center space-x-5">
 
-            <Dropdown />
+          {/* <Dropdown />*/}
             
             
               <button onClick={handleAccountClick} className="hover:text-blue-300">
@@ -47,6 +47,7 @@ const Header = () => {
             
               <a href="/about" className="hover:text-blue-400">About</a>
               <a href="/contacts" className="hover:text-blue-400">Contacts</a>
+              <a href="/users" className="hover:text-blue-400">Users</a>
             
           </nav>
         </div>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import api  from './services/api';
 import Layout from './components/layout';
@@ -9,6 +9,7 @@ import ContactsPage from './pages/ContactsPage';
 import AccountPage from './pages/AccountPage';
 import SearchPage from './pages/SearchPage';
 import RegisterPage from './pages/RegisterPage';
+import PostPage from './pages/PostPage';
 
 
 
@@ -25,6 +26,7 @@ function App() {
       <Layout>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/post/:id" element={<PostPage />} />
         <Route path="/users" element={<UsersPage />} /> {/* Маршрут для UsersPage */}
         <Route path="/about" element={<AboutPage />} /> 
         <Route path="/register" element={<RegisterPage />} />
