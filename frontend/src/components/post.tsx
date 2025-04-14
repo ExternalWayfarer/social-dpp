@@ -3,16 +3,16 @@ import React from 'react';
 export interface Author {
     id: number;
     email: string;
-}
+};
 
 
- interface PostPreviewProps {
-    
+export interface PostPreviewProps {
+    id: number;
     author: Author;
     title: string;
     text: string;
     date?: Date;
-    
+
  };
 
 const PostPreview: React.FC<PostPreviewProps> = ({ author, title, text }) => {

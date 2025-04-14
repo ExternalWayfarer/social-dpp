@@ -28,6 +28,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/post/:id" element={<PostPage />} />
         <Route path="/users" element={<UsersPage />} /> {/* Маршрут для UsersPage */}
+        <Route path="/user/:id" element={<UsersPage />} /> {/* Маршрут для UsersPage */}
         <Route path="/about" element={<AboutPage />} /> 
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/contacts" element={<ContactsPage />} /> 

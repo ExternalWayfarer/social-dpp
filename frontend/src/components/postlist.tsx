@@ -1,27 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import PostPreview from './post'
+import PostPreview, { PostPreviewProps } from './post'
 import api from "../services/api";
-
-export interface Author {
-    id: number;
-    email: string;
-}
-
-
-export interface Post {
-    id: number;
-    author: Author;
-    title: string;
-    text: string;
-    date?: Date;
-
- };
 
 
 
 
 const PostList: React.FC= () => {
-    const [posts, setPosts] = useState<Post[]>([]);
+    const [posts, setPosts] = useState<PostPreviewProps[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 

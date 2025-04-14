@@ -1,29 +1,43 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom'
-import PostPreview from '../components/post'
+import PostPreview, { PostPreviewProps } from '../components/post'
+import api from "../services/api";
 
 
-function PostPage() {
+
+
+const PostPage: React.FC = () => { 
     const { id } = useParams();
+    const [posts, setPosts] = useState<PostPreviewProps[]>([]);
+    const fetchPosts = async () => {
+        try{
+        const response = await api.get('/api/posts');
+        
+        setPosts(response.data);
+        console.log(response.data[0]);
+        } catch (err) {
+            alert('Error while loading posts');
+
+    };
     
+    useEffect(() => {
+        fetchPosts();
+    },[id]);
     return (
-        <React.Fragment>
-      {/* Основной контент страницы */}
-          <main className="mt-16 p-4 space-y-8">
-      
-    
-            <PostPreview 
-                key={id}
-                author={author.email}
-                title={title}
-                text={text}
+        <div >
+            {posts.map(post => (
+                <PostPreview
+                key={post.id}
+                author={post.author.email}
+                title={post.title}
+                text={post.text}
 
                 />
-    
-          </main>
-        </React.Fragment>
-      );
-    }
+            ))}
+        </div>
+    );
+    };
+};
 
 
 
