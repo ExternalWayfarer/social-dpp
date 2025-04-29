@@ -38,7 +38,7 @@ const SearchBar = () => {
         onFocus={() => setShowDropdown(true)}
         onBlur={handleBlur}
         placeholder="Search..."
-        className="px-4 py-2 w-64 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+        className="px-4 text-gray-700 py-2 w-64 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
       />
       {showDropdown && (
         <ul

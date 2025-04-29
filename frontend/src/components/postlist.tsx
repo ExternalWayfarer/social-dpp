@@ -16,9 +16,9 @@ const PostList: React.FC= () => {
     const fetchPosts = async () => {
         try{
         const response = await api.get('/api/posts');
-        
+        //console.log(response.data);
         setPosts(response.data);
-        console.log(response.data[0]);
+        //console.log(response.data[0]);
         } catch (err) {
             setError('Error while loading posts');
         } finally {
@@ -36,10 +36,10 @@ const PostList: React.FC= () => {
             {posts.map(post => (
                 <PostPreview
                 key={post.id}
-                author={post.author.email}
+                id={post.id}
+                author={post.author}
                 title={post.title}
-                text={post.text}
-
+                body={post.body}
                 />
             ))}
         </div>

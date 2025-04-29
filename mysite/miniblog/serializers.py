@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from .models import Post, Comment, CustomUser
-
-# model from models.py, this serializers will used in views.py
+#from django.contrib.auth.hashers import make_password
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -12,8 +11,8 @@ class CommentSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ["email", "password"]
-        extra_kwargs = {'password':{'write_only': True}}
+        fields = ["email", 'password']
+        extra_kwargs = {'password':{'write_only': True}, 'required': True }
     
     def create(self, validated_data):
         user = CustomUser.objects.create_user(

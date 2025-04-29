@@ -30,7 +30,7 @@ const PostPage: React.FC = () => {
                 key={post.id}
                 author={post.author.email}
                 title={post.title}
-                text={post.text}
+                body={post.body}
 
                 />
             ))}

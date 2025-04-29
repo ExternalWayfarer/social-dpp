@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
+from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
+    'rest_framework_simplejwt', 
     'miniblog'
 ]
 
@@ -142,3 +143,36 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://frontend:5173"
 ]
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        # SessionAuthentication if django admin
+        # 'rest_framework.authentication.SessionAuthentication',
+
+        #JWTAuthentication as main auth mode
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        #default permissions
+        # 'rest_framework.permissions.IsAuthenticated',
+        # read for all
+        #'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+        # open access
+        'rest_framework.permissions.AllowAny',
+    )
+    
+}
+
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15), # short token
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),   # long token
+    "ROTATE_REFRESH_TOKENS": False, # if access token updated, same for refresh
+    "BLACKLIST_AFTER_ROTATION": False,
+    "UPDATE_LAST_LOGIN": False, # update last login when token is updated
+
+    "ALGORITHM": "HS256", # hmac sha-256 crypto algrorithm
+    # "SIGNING_KEY": settings.SECRET_KEY, 
+    
+}

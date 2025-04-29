@@ -1,14 +1,14 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from .models import CustomUser
-from .models import Post, Comment
+from .models import Post, Comment, Topic
 
 
 class PostForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ('title', 'text' ,'author')
+        fields = ('title', 'body' ,'author')
 
 class CommentForm(forms.ModelForm):
 

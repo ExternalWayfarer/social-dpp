@@ -11,7 +11,7 @@
             <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
         {% endif %}        
         <h1>{{ post.title }}</h1>
-        <p>{{ post.text|linebreaksbr }}</p>
+        <p>{{ post.body|linebreaksbr }}</p>
         <p>{{ post.author|linebreaksbr }}</p>
     </div>
     <div class="card-body">
@@ -34,7 +34,7 @@
          <p class="font-weight-bold"> 
            {{ comment.author|linebreaksbr }} 
            <span class=" text-muted font-weight-normal"> 
-             {{ comment.published_date }}
+             {{ comment.time_created_at }}
             </span>
           </p>
           {{ comment.body | linebreaks }}

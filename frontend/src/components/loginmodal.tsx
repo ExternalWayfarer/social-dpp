@@ -39,7 +39,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ onClose }) => {
             <input
               type="email"
               id="email"
-              className="mt-1 p-2 w-full border rounded-md"
+              className="mt-1 p-2 text-gray-700 w-full border rounded-md"
               placeholder="Enter your email"
             />
           </div>
@@ -50,7 +50,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ onClose }) => {
             <input
               type="password"
               id="password"
-              className="mt-1 p-2 w-full border rounded-md"
+              className="mt-1 p-2 text-gray-700 w-full border rounded-md"
               placeholder="Enter your password"
             />
           </div>

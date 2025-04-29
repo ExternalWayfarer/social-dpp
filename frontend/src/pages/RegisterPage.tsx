@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import api from "../services/api";
+import { AxiosError } from 'axios';
 
 const RegisterPage = () => {
   const [email, setEmail] = useState('');
@@ -17,8 +18,12 @@ const RegisterPage = () => {
      console.log('User created succesfully', response.data);
      alert("Registration complete")
     } catch (error) {
-      console.error("Registration ERROR", error.response?.data);
-      alert(`Registration error ${error.response?.data?.detail || error.message}`)
+      if (error instanceof AxiosError){
+        console.error("Registration ERROR", error.response?.data);
+        alert(`Registration error ${error.response?.data?.detail || error.message}`)
+      } else {
+        console.log('UnknownError', error)
+      }
     }
   };
 
