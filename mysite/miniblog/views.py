@@ -4,7 +4,7 @@ from django.core.exceptions import PermissionDenied
 #from django.http import HttpResponse
 from django.utils import timezone
 from .models import Post, Comment, CustomUser
-from .serializers import PostSerializer, CommentSerializer, UserSerializer
+from .serializers import PostSerializer, CommentSerializer, UserSerializer, UserRegistrationSerializer
 from rest_framework import viewsets, generics
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -30,6 +30,7 @@ class ProtectedView(APIView):
             # 'profile_data': ProfileSerializer(user.profile).data 
         }
         return Response(content)
+
 
 @api_view(['GET'])
 def hello_world(request):
@@ -119,3 +120,23 @@ class UserCreateViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
     
+class UserRegistrationView(generics.CreateAPIView):
+
+    queryset = CustomUser.objects.all() # queryset формально нужен для CreateAPIView
+    permission_classes = [AllowAny] # <-- РАЗРЕШАЕМ ВСЕМ регистрироваться
+    serializer_class = UserRegistrationSerializer # <-- Используем сериализатор для регистрации
+
+
+
+
+class CurrentUserView(APIView):
+
+    permission_classes = [IsAuthenticated] # <-- Защищаем эндпоинт
+
+    def get(self, request):
+
+        # Благодаря JWTAuthentication (настроенному в settings.py) и валидному токену
+        # в заголовке Authorization, request.user будет содержать объект CustomUser
+        # текущего пользователя.
+        serializer = UserSerializer(request.user) # Передаем пользователя в сериализатор
+        return Response(serializer.data) # Возвращаем сериализованные данные

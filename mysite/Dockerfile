@@ -1,4 +1,4 @@
-FROM python:3.13 AS build-python
+FROM python:3.13.2 AS build-python
 
 WORKDIR /app-backend
 

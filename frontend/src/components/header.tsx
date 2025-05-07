@@ -3,20 +3,27 @@ import { useAuth } from '../context/AuthContext';
 import LoginModal from './loginmodal';
 import { useNavigate } from 'react-router-dom';
 //import Dropdown from './dropdown';
-
 import SearchBar from './searchbar';
 
 const Header = () => {
     //const [isSearchVisible, setSearchVisible] = useState(false);
-    
-    const { isLoggedIn } = useAuth();
+    let sign_in = ""
+    const { accessToken, logout, user, isLoading  } = useAuth();
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
+    if (accessToken) {
+      sign_in = "Profile"
+    } else {
+      sign_in = "Sign In"
+    }
     const handleAccountClick = () => {
-    if (isLoggedIn) {
+    if (accessToken) {
+        
         navigate('/profile'); // Перейти на страницу профиля, если залогинен
+        
     } else {
         setIsModalOpen(true); // Открыть модальное окно, если не залогинен
+        
     }
   };
    
@@ -40,15 +47,17 @@ const Header = () => {
 
           {/* <Dropdown />*/}
             
-            
+
               <button onClick={handleAccountClick} className="hover:text-blue-300">
-                Account
+                { sign_in }
               </button>
             
               <a href="/about" className="hover:text-blue-400">About</a>
               <a href="/contacts" className="hover:text-blue-400">Contacts</a>
               <a href="/users" className="hover:text-blue-400">Users</a>
-            
+              <button onClick={handleAccountClick} className="hover:text-blue-300">
+                Log Out
+              </button>
           </nav>
         </div>
         {isModalOpen && <LoginModal onClose={() => setIsModalOpen(false)} />}

@@ -50,7 +50,6 @@ class Profile(models.Model):
     )
 
     user_blocks = models.ManyToManyField(
-        # like follows but for blacklist
         'self',
         # wee can see who blocked user
         related_name='blocked_by', 
