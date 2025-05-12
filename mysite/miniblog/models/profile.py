@@ -13,7 +13,14 @@ class Profile(models.Model):
         on_delete=models.CASCADE,
         related_name='profile'
     )
-
+    
+    nickname = models.CharField(
+        max_length=50,
+        unique=True,
+        blank=True,  
+        null=True,   
+        verbose_name="nickname"
+    )
     # bio field
     user_bio = models.TextField(
         blank=True,

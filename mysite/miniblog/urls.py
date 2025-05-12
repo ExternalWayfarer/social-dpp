@@ -18,6 +18,7 @@ urlpatterns = [
     path('post/<int:pk>/edit/', views.post_edit, name='post_edit'),
     path('api/', include(router.urls)),
     path('test/hello', hello_world, name='hello_world'),
-    path('user/register', UserRegistrationView.as_view(), name='user_register')
+    path('user/register', UserRegistrationView.as_view(), name='user_register'),
+    
 
 ]

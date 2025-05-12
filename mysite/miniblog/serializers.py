@@ -4,7 +4,7 @@ from .models import Post, Comment, CustomUser, Profile
 
 
 
-
+'''
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
@@ -17,7 +17,7 @@ class UserSerializer(serializers.ModelSerializer):
             password = validated_data['password']
         )
         return user
-    
+'''  
     
 '''
 **********USER REGISTRATION************
@@ -81,8 +81,10 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         return user
 
 
-        
-        
+'''
+**********PROFILE************
+'''
+
 class ProfileSerializerForUser(serializers.ModelSerializer):
     class Meta:
         model = Profile
