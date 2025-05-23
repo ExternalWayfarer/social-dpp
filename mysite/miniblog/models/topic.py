@@ -51,7 +51,6 @@ class Topic(models.Model):
         # every time when save() calling
         auto_now=True    
     )
-
     # magic string view
     def __str__(self):
        
