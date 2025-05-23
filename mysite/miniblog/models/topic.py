@@ -44,7 +44,6 @@ class Topic(models.Model):
     #time methods
     time_created_at = models.DateTimeField(
         # auto_now_add=True for automatic save current time
-
         auto_now_add=True    
     )
     time_updated_at = models.DateTimeField(
