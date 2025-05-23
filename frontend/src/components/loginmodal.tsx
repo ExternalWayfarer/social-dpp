@@ -32,7 +32,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ onClose, onLoginSuccess }) => {
     setLoading(true);
 
     try {
-      const response = await api.post('/api/token/', { 
+      const response = await api.post('/token/', { 
         email: email,
         password: password,
       });
@@ -73,7 +73,6 @@ const LoginModal: React.FC<LoginModalProps> = ({ onClose, onLoginSuccess }) => {
         ref={modalRef}
         className="bg-white p-6 rounded-lg shadow-lg relative"
       >
-        {/* Кнопка закрытия */}
         <button
           onClick={onClose}
           className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"

@@ -16,8 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from miniblog.views import ProtectedView
-#from miniblog import views
+from miniblog.views import ProtectedView, UserRegistrationView, CurrentUserView
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -26,9 +25,22 @@ from rest_framework_simplejwt.views import (
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('miniblog.urls')),
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/protected/', ProtectedView.as_view(), name='access_token'),
+    
+     # ---- central endpoints for auth -----
+    path('api/auth/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/auth/register/', UserRegistrationView.as_view(), name='user_register_api'), 
+    path('api/users/me/', CurrentUserView.as_view(), name='current_user_api'),      
+
+    # --- test protected endpoint ---
+    path('api/protected/', ProtectedView.as_view(), name='protected_api'),
+
+    # --- API------
+    path('api/', include('miniblog.api_urls')), 
+
+    # --- other urls -----
+    #path('', include('miniblog.web_urls')), 
+
+    
 ]
     

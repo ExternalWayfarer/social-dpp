@@ -2,18 +2,18 @@
 FROM node:20.18.0 AS builder
 
 
-# Устанавливаем рабочую директорию
+# working directory
 WORKDIR /app-frontend
 
-# Копируем package.json и package-lock.json для установки зависимостей
+# copy package.json and package-lock.json for dependencies
 COPY package*.json ./
 
-# Устанавливаем зависимости
+# instal deps
 RUN npm install
 
-# Копируем остальной код проекта
+# copy other code
 COPY . .
 
 
-# Запускаем сервер разработки Vite
+# RRUN VITE SERV
 CMD ["npm", "run", "dev"]

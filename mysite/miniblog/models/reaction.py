@@ -40,7 +40,7 @@ class Reaction(models.Model):
     time_created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user} отреагировал {self.get_reaction_type_display()} на {self.content_object}"
+        return f"{self.user} reacted {self.get_reaction_type_display()} on {self.content_object}"
 
     class Meta:
         verbose_name = "Reaction"

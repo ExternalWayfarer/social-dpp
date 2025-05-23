@@ -18,13 +18,13 @@ services:
       context: ./mysite
       dockerfile: Dockerfile
     ports:
-      - "8000:8000" # Пробрасываем порт для NestJS
+      - "8000:8000" # for django
     environment:
       DATABASE_URL: "postgresql://father:1234@db:5432/motherbase"
     depends_on:
       - db
     volumes:
-      - ./mysite:/app-backend # Монтируем директорию бэкенда
+      - ./mysite:/app-backend 
 
   db:
     image: postgres:15
@@ -36,7 +36,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - db_data:/var/lib/postgresql/data # Храним данные базы данных в томе
+      - db_data:/var/lib/postgresql/data # datdabase
 
 volumes:
   db_data:

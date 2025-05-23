@@ -19,10 +19,10 @@ const Header = () => {
     const handleAccountClick = () => {
     if (accessToken) {
         
-        navigate('/profile'); // Перейти на страницу профиля, если залогинен
+        navigate('/profile'); // to profile IF logged in
         
     } else {
-        setIsModalOpen(true); // Открыть модальное окно, если не залогинен
+        setIsModalOpen(true); // open modal window if not
         
     }
   };
@@ -35,11 +35,11 @@ const Header = () => {
             {/* Логотип */}
                 <div className="flex items-center space-x-4">
                     <a href="/" className="text-2xl font-bold hover:text-blue-300">
-                        DPP-Social
+                        X
                     </a>
      
 
-                    <SearchBar /> {/* Вставляем поиск в шапку */}
+                    <SearchBar /> 
 
                     </div>
         {/* Навигация */}

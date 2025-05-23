@@ -5,16 +5,14 @@ function UsersPage() {
   const [users, setUsers] = useState<{ id: number; email: string; password: string }[]>([]);
   const [newUser, setNewUser] = useState({ email: '', password: '' });
 
-  // Получение пользователей при загрузке страницы
   useEffect(() => {
     api.get('api/users/').then((response) => setUsers(response.data));
   }, []);
 
-  // Добавление нового пользователя
   const addUser = () => {
     api.post('api/users/', newUser).then((response) => {
-      setUsers((prev) => [...prev, response.data]); // Обновляем список пользователей
-      setNewUser({ email: '', password: '' }); // Очищаем форму
+      setUsers((prev) => [...prev, response.data]); 
+      setNewUser({ email: '', password: '' }); 
     });
   };
 

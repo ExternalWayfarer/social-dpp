@@ -17,8 +17,8 @@ class Profile(models.Model):
     nickname = models.CharField(
         max_length=50,
         unique=True,
-        blank=True,  
-        null=True,   
+        blank=False,  
+        null=False,   
         verbose_name="nickname"
     )
     # bio field
@@ -40,7 +40,12 @@ class Profile(models.Model):
         verbose_name="Avatar" 
     )
 
-    # socials
+    # ---------activity------------
+    
+    rating = models.IntegerField(default=0, verbose_name="Rating")
+    
+
+    # ----------socials-------------
     user_follows = models.ManyToManyField(
         # user can sub to many and many can sub to user
         'self',
@@ -68,8 +73,6 @@ class Profile(models.Model):
         verbose_name="Blacklist"
     )
 
-    # extra fields
-    # rating = models.IntegerField(default=0, verbose_name="Rating")
 
     # date and time methods
     time_created_at = models.DateTimeField(
@@ -87,7 +90,7 @@ class Profile(models.Model):
     #magic method (string view)
     def __str__(self):
        
-        return f"User {self.user.username} profile"
+        return f"User {self.nickname} ({self.user.email})"
 
     # meta for settings
     class Meta:

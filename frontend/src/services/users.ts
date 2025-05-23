@@ -1,4 +1,4 @@
-import api from './api'; // imporrt axios
+import api from './api'; 
 
 export const fetchProducts = async (searchTerm?: string) => {
     try {

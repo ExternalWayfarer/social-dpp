@@ -6,11 +6,9 @@ import React, {useEffect, useState} from 'react';
 function ContactsPage() {
   return (
     <React.Fragment>
-  {/* Основной контент страницы */}
       <main className="mt-16 p-4 space-y-8">
         <h1 className="text-4xl font-bold">Welcome to ContactsPage</h1>
 
-        {/* Таблица для тестирования скроллинга */}
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white border-collapse border border-gray-400">
             <thead>

@@ -8,7 +8,7 @@ const RegisterForm = () =>{
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await api.post('/api/users/');
+            const response = await api.post('users/');
             return response.data;
           } catch (error) {
             console.error("Registration error", error);

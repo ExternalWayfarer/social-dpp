@@ -2,8 +2,8 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 //import api  from './services/api';
 import Layout from './components/layout';
-import UsersPage from './pages/UsersPage'; // Импортируем страницу пользователей
-import HomePage from './pages/HomePage'; // Если есть главная страница
+import UsersPage from './pages/UsersPage'; 
+import HomePage from './pages/HomePage'; 
 import AboutPage from './pages/AboutPage';
 import ContactsPage from './pages/ContactsPage';
 import ProfilePage from './pages/ProfilePage';

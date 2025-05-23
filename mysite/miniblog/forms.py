@@ -32,6 +32,4 @@ class CustomUserChangeForm(UserChangeForm):
 
 
 
-#class SearchForm(forms.Form):
-#    query = forms.CharField()
 

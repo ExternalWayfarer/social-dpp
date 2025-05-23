@@ -26,7 +26,7 @@ const SearchBar = () => {
   };
 
   const handleBlur = () => {
-    setTimeout(() => setShowDropdown(false), 200); // Чтобы дать время на клик
+    setTimeout(() => setShowDropdown(false), 200); 
   };
 
   return (

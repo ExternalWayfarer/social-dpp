@@ -6,7 +6,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     return (
       <div>
         <Header />
-        <main className="mt-16">{children}</main> {/* Отступ для шапки */}
+        <main className="mt-16">{children}</main> 
       </div>
     );
   };

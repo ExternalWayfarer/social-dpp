@@ -9,9 +9,8 @@ interface AuthTokens {
 interface User {
   id: number;
   email: string;
-  // Добавьте другие поля, которые возвращает ваш API
+  // profile
   // nickname?: string;
-  // role?: string; // Если используете поле role
 }
 
 interface AuthContextProps {
@@ -74,30 +73,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         console.log("Logging out and removing tokens");
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
-        setAccessToken(null); // Сбрасываем состояние в контексте
-        // Здесь можно добавить редирект на главную или страницу входа
-        // и сбросить другие связанные состояния (например, данные пользователя)
+        setAccessToken(null); 
     } catch (error) {
         console.error("Failed to remove tokens from localStorage", error);
     }
   }, []);
 
-  // Вычисляем isLoggedIn на основе наличия accessToken в состоянии
-  // const isLoggedIn = !!accessToken; // Если вам все еще нужен явный boolean
 
-  // Формируем значение контекста
   const contextValue: AuthContextProps = {
     accessToken,
     login,
     logout,
     user,
-    isLoading, // Передаем состояние загрузки
+    isLoading, 
   };
 
   return (
     <AuthContext.Provider value={contextValue}>
-      {/* Не рендерим дочерние элементы, пока идет начальная проверка токена */}
-      {!isLoading ? children : null /* или показать спиннер/заглушку */}
+      
+      {!isLoading ? children : null }
     </AuthContext.Provider>
   );
 };

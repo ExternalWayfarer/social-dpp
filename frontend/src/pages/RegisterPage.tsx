@@ -8,7 +8,7 @@ const RegisterPage = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    // Логика регистрации
+    // registration logic
     try {
       const response = await api.post('/api/users/', {
         email,

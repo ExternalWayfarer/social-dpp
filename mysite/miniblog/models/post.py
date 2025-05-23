@@ -10,10 +10,13 @@ class Post(models.Model):
             DRAFT = 'DF', 'Draft'
             PUBLISHED = 'PB', 'Published'
             ARCHIVED = 'AR', 'Archived'
-            
+    
+    
+    
+    
     title = models.CharField(
-        max_length=255,     
-        verbose_name="Post title" 
+        max_length=150,     
+        verbose_name="Post title"
     )
 
     body = models.TextField(
@@ -26,14 +29,15 @@ class Post(models.Model):
         #many-to-one , one author can create many different posts
         settings.AUTH_USER_MODEL, 
         # if user was removed, their posts will be also removed
-        on_delete=models.CASCADE, 
+        null=True,  
+        on_delete=models.SET_NULL, 
         # user.posts.all()
         related_name='posts',    
         verbose_name="Author"
     )
 
     topic = models.ForeignKey(
-        # many to one, many posts - one topic (it can be)
+        # many to one, many posts - one topic
         
         Topic,                    
         # if topic removed - 
@@ -43,7 +47,7 @@ class Post(models.Model):
         blank=True,   
         # for topic.posts.all() 
         related_name='posts',     
-        verbose_name="Topic"
+        verbose_name="Related topic"
     )
 
     rating = models.IntegerField(
@@ -62,6 +66,7 @@ class Post(models.Model):
     )
     
     
+    
     status = models.CharField(
         max_length=2,
         choices=Status.choices,
@@ -75,13 +80,15 @@ class Post(models.Model):
     time_created_at = models.DateTimeField(
         auto_now_add=True,
         #index for sorting acceleration
-        db_index=True      
+        db_index=True,
+        verbose_name="Creation date"      
     )
     
     
     time_updated_at = models.DateTimeField(
     # auto update when save the post
-    auto_now=True
+    auto_now=True,
+    verbose_name="Update date"
     )
 
     def publish(self):
