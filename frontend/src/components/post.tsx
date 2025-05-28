@@ -28,6 +28,7 @@ export interface Post {
   published_date: string | null; // ISO or null
   time_created_at: string; // ISO?
   time_updated_at: string; 
+  rating: number;
   // another fields
 }
 
@@ -45,14 +46,35 @@ export interface PostPreviewProps {
  };
 
 const PostPreview = ({ post }: PostPreviewProps) => {
-    const { id, title, body, author, topic, published_date, time_created_at } = post;
-    const theAuthor = author.profile.nickname
+    const { id, title, body, author, topic, published_date, rating } = post;
+    const theAuthor = author.profile.nickname;
     return (
-        <div>
+        <div className="bg-white rounded-lg">
+            <div>
+              <h1 className="p-4 text-4xl font-bold text-black hover:text-blue-400">{title}</h1>
+            </div>
             
-            <h3 className="text-4xl font-bold">{title}</h3>
-            <p className="mt-4 text-lg">{theAuthor}</p>
-            <p className="mt-4 text-lg">{body}</p>
+            <div className="p-4 flex flex-row gap-x-3">
+              <div className="text-sm text-indigo-500 hover:text-blue-400">
+                {theAuthor}
+              </div>
+              <div className="text-sm text-gray-500">
+                              posted {published_date ? new Date(published_date).toLocaleDateString() : 'recently'}
+              </div>
+            </div>
+            <div className="mt-4 p-4 text-lg prose max-w-none whitespace-pre-wrap">
+              {/* if HTML, then dangerouslySetInnerHTML. if just simpl;e text {body} */}
+              { body } 
+            </div>
+            <div className="p-4">
+              <p className="text-sm text-gray-500">⭐ {rating}</p>
+            </div>
+            <div className="p-4">
+              <p className="text-sm text-gray-500 hover:text-blue-400">💬 0</p>
+            </div>
+            
+            
+            
         </div>
         
     );

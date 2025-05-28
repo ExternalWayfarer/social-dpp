@@ -23,8 +23,8 @@ class Comment(models.Model):
         on_delete=models.SET_NULL, 
         null=True,
         # some_user.comments.all() should return all comments of this user
-        related_name='comments',  
-        verbose_name="Author"      
+        related_name='comments', 
+        verbose_name="Author"
     )
 
     body = models.TextField(

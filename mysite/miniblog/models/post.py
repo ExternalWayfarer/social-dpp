@@ -28,7 +28,6 @@ class Post(models.Model):
     author = models.ForeignKey(
         #many-to-one , one author can create many different posts
         settings.AUTH_USER_MODEL, 
-        # if user was removed, their posts will be also removed
         null=True,  
         on_delete=models.SET_NULL, 
         # user.posts.all()

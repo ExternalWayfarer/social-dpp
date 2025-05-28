@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'; 
-import PostPreview, { Post, PostPreviewProps } from './post'
+import PostPreview, { Post } from './post'
 import api from "../services/api";
 
 
@@ -34,17 +34,20 @@ const PostList: React.FC= () => {
     if (error) return <div>{error}</div>;
     console.log(posts);
     return ( 
-        <div className="container mx-auto px-4 py-8">
-        <h1 className="text-4xl font-bold text-center mb-12 text-gray-800">Лента</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-
-            {posts.map(post => (
-                <Link to={`/posts/${post.id}`} key={post.id} className="block">
-                    <PostPreview post={post} />
-                </Link>
-            ))}
+        <div className="mx-auto grid grid-cols-4">
+            {/*<h1 className="text-4xl font-bold text-center mb-12 text-gray-800">Main</h1>*/}
+            <div />
+            <div className="col-span-2 gap-8 p-4 space-y-8">
                 
-        </div>
+                {posts.map(post => (
+                    <Link to={`/posts/${post.id}`} key={post.id} className="block">
+                        <PostPreview post={post} />
+                    </Link>
+                ))}
+                
+            </div>
+            
+            <div />
         </div>
     );
 };

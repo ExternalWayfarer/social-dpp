@@ -10,14 +10,22 @@ class UserCreateViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 
 class PostViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.select_related('author').all()
+    queryset = Post.objects.select_related('author__profile').all()
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticatedOrReadOnly] 
 
 class CommentViewSet(viewsets.ModelViewSet):
-    queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     permission_classes = [IsAuthenticatedOrReadOnly] 
+    def get_queryset(self):
+        queryset = Comment.objects.select_related('author__profile').all()
+        post_id = self.request.query_params.get('post', None)
+        if post_id is not None:
+            queryset = queryset.filter(post_id=post_id)
+        else:
+            return Comment.objects.none()
+        return queryset.order_by('time_created_at')
+        
     
 class TopicViewSet(viewsets.ModelViewSet):
     queryset = Topic.objects.all()
