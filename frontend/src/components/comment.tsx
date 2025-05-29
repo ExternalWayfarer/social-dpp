@@ -1,31 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'; 
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import api from "../services/api";
-import { AuthorProfile } from './post';
-
-
+import { AuthorProfile } from "./post";
 
 export interface CommentAuthor {
   id: number;
   //email: string;
-  profile: AuthorProfile; 
+  profile: AuthorProfile;
 }
-
-
 
 export interface PostComment {
-    id: number;
-    postId: number;
-    body: string;
-    author: CommentAuthor; //  nickname
-    time_created_at: string; // ISO?
-    time_updated_at: string; 
-    rating: number;
-    // another fields
+  id: number;
+  postId: number;
+  body: string;
+  author: CommentAuthor; //  nickname
+  time_created_at: string; // ISO?
+  time_updated_at: string;
+  rating: number;
+  // another fields
 }
-
-
-
 
 export interface PaginatedResponse<T> {
   count: number;
@@ -34,35 +27,31 @@ export interface PaginatedResponse<T> {
   results: T[];
 }
 
-
 export interface CommentProps {
-    comment: PostComment
- };
+  comment: PostComment;
+}
 
-
-const CommentPreview = ({comment} :CommentProps) => {
-    const { id, body, author, time_created_at, time_updated_at, rating } = comment;
-    const theAuthor = author?.profile?.nickname;
-    return(
-        <div className='hover:bg-slate-50 p-2'>
-            <div className='flex flex-row gap-x-3'>
-            <div className=''>
-                {theAuthor}
-            </div>
-            <div>
-                {time_created_at ? new Date(time_created_at).toLocaleDateString() : 'recently'}
-            </div>
-            </div>
-            <div className='pt-2 pb-2'>
-                {body}
-            </div> 
-            
-             <div>
-                ⭐ {rating}
-            </div> 
-                     
+const CommentPreview = ({ comment }: CommentProps) => {
+  const { id, body, author, time_created_at, time_updated_at, rating } =
+    comment;
+  const theAuthor = author?.profile?.nickname;
+  return (
+    <div className="hover:bg-slate-50 p-2">
+      <div className="flex flex-row gap-x-3">
+        <div className="text-sm text-indigo-500 hover:text-blue-400">
+          {theAuthor}
         </div>
-    );
+        <div className="text-sm text-gray-500">
+          {time_created_at
+            ? new Date(time_created_at).toLocaleDateString()
+            : "recently"}
+        </div>
+      </div>
+      <div className="pt-2 pb-2">{body}</div>
+
+      <div>⭐ {rating}</div>
+    </div>
+  );
 };
 
 export default CommentPreview;

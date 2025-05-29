@@ -114,11 +114,29 @@ class UserSerializer(serializers.ModelSerializer):
 '''
   
 class PostSerializer(serializers.ModelSerializer):
-    author = UserSerializer()
+    author = UserSerializer(read_only = True)
+    topic = serializers.StringRelatedField(allow_null=True) 
+    comments_count = serializers.IntegerField(
+        source='total_comments', 
+        read_only=True
+    )
     class Meta:
         model = Post
-        fields = "__all__"
-        
+        fields = [
+            'id',
+            'title',
+            'body', # snippet maybe for homepage
+            'author',
+            'topic',
+            'status',
+            'published_date',
+            'time_created_at', 
+            'time_updated_at', 
+            'rating',          
+            'comments_count', 
+        ]
+        read_only_fields = ['status', 'published_date', 'time_created_at', 'time_updated_at', 'comments_count', 'rating']
+
 class CommentSerializer(serializers.ModelSerializer):
     author = UserSerializer()
     class Meta:
