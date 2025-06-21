@@ -10,6 +10,7 @@ import ProfilePage from './pages/ProfilePage';
 import SearchPage from './pages/SearchPage';
 import RegisterPage from './pages/RegisterPage';
 import PostPage from './pages/PostPage';
+import CreatePostPage from './pages/CreatePost';
 
 
 
@@ -34,6 +35,7 @@ function App() {
         <Route path="/contacts" element={<ContactsPage />} /> 
         <Route path="/profile" element={<ProfilePage />} /> 
         <Route path="/search" element={<SearchPage />} /> 
+        <Route path="/create-post" element={<CreatePostPage />} />
       </Routes>
       </Layout>
     </Router>

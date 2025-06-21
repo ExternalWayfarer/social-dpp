@@ -1,5 +1,7 @@
 from rest_framework import serializers
-from .models import Post, Comment, CustomUser, Profile, Topic
+from .models import Post, Comment, CustomUser, Profile, Topic, Reaction
+from django.contrib.contenttypes.models import ContentType
+
 #from django.contrib.auth.hashers import make_password
 
 
@@ -54,7 +56,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         except Exception as e:
              print(f"Warning: Could not create profile for {user.email}: {e}")
              user.delete()
-             raise serializers.ValidationError("Could not create profile.") # И вернуть ошибку
+             raise serializers.ValidationError("Could not create profile.") 
 
         return user
 '''
@@ -101,13 +103,13 @@ class UserSerializer(serializers.ModelSerializer):
             #'primary_role',
         ]
     
-    def get_primary_role(self, obj):
-        groups = obj.groups.all()
-        if groups.filter(name='Главный администратор').exists(): return 'Главный администратор'
-        if groups.filter(name='Администратор').exists(): return 'Администратор'
-        if groups.filter(name='Модератор сайта').exists(): return 'Модератор сайта'
-        if groups.filter(name='Пользователь').exists(): return 'Пользователь'
-        return None 
+'''   def get_primary_role(self, obj):
+    groups = obj.groups.all()
+    if groups.filter(name='Admin').exists(): return 'Admin'
+    if groups.filter(name='Moder').exists(): return 'Moder'
+    if groups.filter(name='Moder').exists(): return 'Moder'
+    if groups.filter(name='User').exists(): return 'User'
+    return None '''
 
 '''
 ------------------------------
@@ -119,13 +121,18 @@ class PostSerializer(serializers.ModelSerializer):
     comments_count = serializers.IntegerField(
         source='total_comments', 
         read_only=True
+    
     )
+    #short_body = serializers.CharField(source = 'body')
+    content_type_id = serializers.SerializerMethodField()
     class Meta:
         model = Post
+    
         fields = [
             'id',
             'title',
-            'body', # snippet maybe for homepage
+            'body', 
+            #'short_body',
             'author',
             'topic',
             'status',
@@ -134,17 +141,56 @@ class PostSerializer(serializers.ModelSerializer):
             'time_updated_at', 
             'rating',          
             'comments_count', 
+            'content_type_id'
         ]
-        read_only_fields = ['status', 'published_date', 'time_created_at', 'time_updated_at', 'comments_count', 'rating']
-
+        read_only_fields = [ 'time_created_at', 'time_updated_at', 'comments_count', 'rating','content_type_id']
+    
+    def get_content_type_id(self, obj):
+        return ContentType.objects.get_for_model(obj).pk
+    
+    
 class CommentSerializer(serializers.ModelSerializer):
     author = UserSerializer()
+    content_type_id = serializers.SerializerMethodField()
+
     class Meta:
         model = Comment
-        fields = "__all__"
-        
+        fields = [
+            'id',
+            'body', 
+            'parent',
+            'author',
+            'time_created_at', 
+            'time_updated_at', 
+            'rating',          
+            'content_type_id'
+        ]
+    def get_content_type_id(self, obj):
+        return ContentType.objects.get_for_model(obj).pk  
+    def get_content_object_str(self, obj): 
+        if hasattr(obj, 'content_object') and obj.content_object: 
+            return str(obj.content_object)
+        return None
+  
         
 class TopicSerializer(serializers.ModelSerializer):
     class Meta:
         model = Topic
         fields = "__all__"
+        
+class ReactionSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True) 
+    reaction_type_display = serializers.CharField(source='get_reaction_type_display', read_only=True)
+    content_object_str = serializers.SerializerMethodField(read_only=True)
+    class Meta:
+        model = Reaction
+
+
+        fields = "__all__"
+        #read_only_fields = ['content_type','object_id', 'content_object']
+        
+    def get_content_object_str(self, obj):
+        if obj.content_object:
+            return f"{obj.content_type.model}: {obj.content_object}"
+        else:
+            return None

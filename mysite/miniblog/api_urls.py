@@ -2,13 +2,14 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import hello_world
-from .viewsets import PostViewSet, CommentViewSet, TopicViewSet
+from .viewsets import PostViewSet, CommentViewSet, TopicViewSet, ReactionViewSet
 
 
 router = DefaultRouter()
 router.register(r'posts', PostViewSet, basename='post_api')
 router.register(r'comments', CommentViewSet, basename='comment_api')
 router.register(r'topics', TopicViewSet, basename='topic_api')
+router.register(r'reactions', ReactionViewSet, basename='reaction_api')
 
 
 

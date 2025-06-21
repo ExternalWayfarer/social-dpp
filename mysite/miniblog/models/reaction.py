@@ -4,7 +4,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 
 class Reaction(models.Model):
-    # every reaction type
+    
     class ReactionType(models.TextChoices):
         # VAR = 'DB VIEW', 'GRAPHIC VIEW'
         LIKE = 'LIKE', '👍' 
@@ -33,14 +33,15 @@ class Reaction(models.Model):
     )
 
     # Generic Foreign Key for connection TO (Post, Comment)
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    object_id = models.PositiveIntegerField()
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, null=False,)
+    object_id = models.PositiveIntegerField(null=False,)
+    
     content_object = GenericForeignKey('content_type', 'object_id')
 
     time_created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user} reacted {self.get_reaction_type_display()} on {self.content_object}"
+        return f"{self.user} reacted {self.get_reaction_type_display()}  on {self.content_object} at {self.time_created_at}"
 
     class Meta:
         verbose_name = "Reaction"

@@ -7,6 +7,7 @@ from .models.comment import Comment
 from .models.post import Post
 from .models.topic import Topic
 from .models.profile import Profile
+from .models.reaction import Reaction
 '''
 admin.site.register(Post)
 admin.site.register(Comment)
@@ -15,7 +16,7 @@ admin.site.register(Topic)
 #admin.site.register(Profile)
 '''
 
-### ********** INLINES **************####
+### ---INLINES ----
 class ProfileInline(admin.StackedInline): 
     model = Profile
     can_delete = False 
@@ -36,7 +37,7 @@ class CommentInline(admin.StackedInline):
     readonly_fields = ('time_created_at', 'time_updated_at')
     extra = 0
 '''
-class CommentInline(admin.TabularInline):
+class CommentInlineUser(admin.TabularInline):
     model = Comment
     can_delete = True 
     verbose_name_plural = 'Comments'
@@ -66,14 +67,35 @@ class PostInlineUser(admin.StackedInline):
     fields = ('body','author', 'rating')
     readonly_fields = ('time_created_at', 'time_updated_at')
     extra = 0 
-    
-### ****** ADMIN MODELS ********** ###
+
+class CommentInlinePost(admin.TabularInline):
+    model = Comment
+    can_delete = True 
+    verbose_name_plural = 'Comments'
+    fk_name = 'post'
+    # fields from model
+    fields = ('body','author', 'rating')
+    readonly_fields = ('time_created_at', 'time_updated_at')
+    extra = 0
+
+'''class ReactionsInlinePost(admin.TabularInline):
+    model = Reaction
+    can_delete = True 
+    verbose_name_plural = 'Reactions'
+    fk_name = 'reactions'
+    # fields from model
+    fields = ('user', 'content_type','object_id')
+    readonly_fields = ('time_created_at', )
+    extra = 0
+    '''
+
+### -- ADMIN MODELS ---
 
 
 @admin.register(CustomUser) 
 class CustomUserAdmin(BaseUserAdmin):
    
-    inlines = (ProfileInline, PostInlineUser, CommentInline)
+    inlines = (ProfileInline, PostInlineUser, CommentInlineUser)
 
 
     list_display = ('email', 'get_profile_nickname', 'is_staff', 'is_active', 'date_joined')
@@ -103,10 +125,10 @@ class CustomUserAdmin(BaseUserAdmin):
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    
+    inlines = (CommentInlinePost,)
 
     list_display = ('title', 'author', 'topic', 'rating','status', 'published_date', 'time_created_at')
-    list_filter = ('status', 'topic', 'author', 'time_created_at', 'published_date')
+    list_filter = ['status', 'topic', 'author', 'time_created_at', 'published_date']
     search_fields = ('title', 'body', 'author__email', 'topic__name') 
     raw_id_fields = ('author', 'topic')
     date_hierarchy = 'published_date' 
@@ -118,7 +140,7 @@ class PostAdmin(admin.ModelAdmin):
         (None, {'fields': ('author','title', 'body', 'topic')}), 
         ('Info', {'fields': ('status', 'rating', 'published_date','time_created_at', 'time_updated_at')}),
     )
-    readonly_fields=( 'published_date','time_created_at', 'time_updated_at')
+    readonly_fields=( 'time_created_at', 'time_updated_at')
 
 
 
@@ -158,7 +180,7 @@ class TopicAdmin(admin.ModelAdmin):
     list_display = ('name', 'topic_slug', 'description_preview')
     search_fields = ('name', 'topic_description')
     prepopulated_fields = {'topic_slug': ('name',)} 
-
+    # laaateeerrrr
     def description_preview(self, obj):
         if obj.topic_description:
             return (obj.topic_description[:75] + '...') if len(obj.topic_description) > 75 else obj.topic_description

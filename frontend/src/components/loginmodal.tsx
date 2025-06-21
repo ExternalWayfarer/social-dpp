@@ -1,20 +1,18 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState } from "react";
 import api from "../services/api";
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from "../context/AuthContext";
 
 interface LoginModalProps {
-// function for modal window closing
-  onClose: () => void; 
+  // function for modal window closing
+  onClose: () => void;
   onLoginSuccess?: () => void;
 }
 
 const LoginModal: React.FC<LoginModalProps> = ({ onClose, onLoginSuccess }) => {
-
   const modalRef = useRef<HTMLDivElement>(null); // link to modal window content
-  // input field states
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const { login } = useAuth();
@@ -28,46 +26,41 @@ const LoginModal: React.FC<LoginModalProps> = ({ onClose, onLoginSuccess }) => {
   // form sending handler
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setError('');
+    setError("");
     setLoading(true);
 
     try {
-      const response = await api.post('/token/', { 
+      const response = await api.post("/auth/token/", {
         email: email,
         password: password,
       });
 
-      console.log('Login successful:', response.data);
+      console.log("Login successful:", response.data);
       // token from auth context
       login(response.data);
 
-      
       onClose();
 
       //callback
       if (onLoginSuccess) {
         onLoginSuccess();
-       }
-
-
-    } catch (err: any) { 
-      console.error('Login failed:', err);
+      }
+    } catch (err: any) {
+      console.error("Login failed:", err);
       if (err.response && err.response.status === 401) {
-        setError('Wrong email or password.');
+        setError("Wrong email or password.");
       } else {
-        setError('Error. Try later.');
+        setError("Error. Try later.");
       }
     } finally {
       setLoading(false);
     }
   };
 
-
-
   return (
     <div
       className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
-      onClick={handleBackdropClick} 
+      onClick={handleBackdropClick}
     >
       <div
         ref={modalRef}
@@ -81,11 +74,14 @@ const LoginModal: React.FC<LoginModalProps> = ({ onClose, onLoginSuccess }) => {
         </button>
 
         <h2 className="text-2xl font-bold mb-4">Login</h2>
-        
+
         <form onSubmit={handleSubmit}>
-        {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
+          {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
           <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700"
+            >
               Email
             </label>
             <input
@@ -94,13 +90,16 @@ const LoginModal: React.FC<LoginModalProps> = ({ onClose, onLoginSuccess }) => {
               className="mt-1 p-2 text-gray-700 w-full border rounded-md"
               placeholder="Enter your email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)} 
+              onChange={(e) => setEmail(e.target.value)}
               required
               disabled={loading}
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700"
+            >
               Password
             </label>
             <input
@@ -109,10 +108,9 @@ const LoginModal: React.FC<LoginModalProps> = ({ onClose, onLoginSuccess }) => {
               className="mt-1 p-2 text-gray-700 w-full border rounded-md"
               placeholder="Enter your password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)} 
+              onChange={(e) => setPassword(e.target.value)}
               required
               disabled={loading}
-
             />
           </div>
           <button
@@ -120,15 +118,15 @@ const LoginModal: React.FC<LoginModalProps> = ({ onClose, onLoginSuccess }) => {
             className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
             disabled={loading}
           >
-            {loading ? 'Logging in...' : 'Login'}
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
         {/* sign up link */}
         <p className="mt-4 text-sm text-gray-600 text-center">
-          Don't have an account?{' '}
+          Don't have an account?{" "}
           <a href="/register" className="text-blue-600 hover:underline">
-Register here
-</a>
+            Register here
+          </a>
         </p>
       </div>
     </div>

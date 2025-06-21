@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from miniblog.views import ProtectedView, UserRegistrationView, CurrentUserView
+from miniblog.views import ProtectedView, UserRegistrationView, CurrentUserView #ReactionView
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -26,19 +26,20 @@ from rest_framework_simplejwt.views import (
 urlpatterns = [
     path('admin/', admin.site.urls),
     
-     # ---- central endpoints for auth -----
+     # ---- central endpoints for auth ---
     path('api/auth/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/auth/register/', UserRegistrationView.as_view(), name='user_register_api'), 
-    path('api/users/me/', CurrentUserView.as_view(), name='current_user_api'),      
+    path('api/auth/register/', UserRegistrationView.as_view(), name='user_register_api'),
+    path('api/users/me/', CurrentUserView.as_view(), name='current_user_api'),
+    #path('api/reactions/', ReactionView.as_view(), name='reaction_api'),
 
     # --- test protected endpoint ---
     path('api/protected/', ProtectedView.as_view(), name='protected_api'),
 
-    # --- API------
-    path('api/', include('miniblog.api_urls')), 
+    # --- API----
+    path('api/', include('miniblog.api_urls')),
 
-    # --- other urls -----
+    # --- other urls --
     #path('', include('miniblog.web_urls')), 
 
     

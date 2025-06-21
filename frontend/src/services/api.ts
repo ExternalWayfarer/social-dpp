@@ -45,14 +45,17 @@ api.interceptors.request.use(
 
 
 
-
+interface QueueArrayPromise { 
+  resolve: (value: any) => void;
+   reject: (reason?: any) => void 
+  }
 
 
 
 
 // ----- response interceptor -------
 let isRefreshing = false;
-let failedQueue: Array<{ resolve: (value: any) => void; reject: (reason?: any) => void }> = [];
+let failedQueue: Array<QueueArrayPromise> = [];
 
 const processFailedQueue = (error: Error | null, token: string | null = null) => {
   failedQueue.forEach(prom => {

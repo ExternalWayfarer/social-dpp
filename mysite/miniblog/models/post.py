@@ -28,10 +28,10 @@ class Post(models.Model):
     author = models.ForeignKey(
         #many-to-one , one author can create many different posts
         settings.AUTH_USER_MODEL, 
-        null=True,  
-        on_delete=models.SET_NULL, 
+        null=False,  
+        on_delete=models.CASCADE, 
         # user.posts.all()
-        related_name='posts',    
+        related_name='posts',
         verbose_name="Author"
     )
 

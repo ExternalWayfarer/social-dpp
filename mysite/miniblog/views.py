@@ -3,8 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 #from django.http import HttpResponse
 from django.utils import timezone
-from .models import Post, Comment, CustomUser
-from .serializers import UserSerializer, UserRegistrationSerializer
+from .models import Post, Comment, CustomUser, Reaction
+from .serializers import UserSerializer, UserRegistrationSerializer, ReactionSerializer
 from rest_framework import viewsets, generics
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -119,9 +119,15 @@ class UserRegistrationView(generics.CreateAPIView):
     queryset = CustomUser.objects.all()
     permission_classes = [AllowAny] # allow everyone to sign up
     serializer_class = UserRegistrationSerializer 
+'''
+class ReactionView(generics.CreateAPIView):
 
-
-
+    queryset = Reaction.objects.all()
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    serializer_class = ReactionSerializer 
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+'''
 
 class CurrentUserView(APIView):
     permission_classes = [IsAuthenticated]

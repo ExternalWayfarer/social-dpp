@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import api from "../services/api";
+//import React, { useState } from "react";
+//import api from "../services/api";
 
 const CommentForm = () => {
-  const [commentForm, setCommentForm] = useState("");
+  //const [commentForm, setCommentForm] = useState("");
   //const [results, setResults] = useState([]);
   //const [showDropdown, setShowDropdown] = useState(false);
 

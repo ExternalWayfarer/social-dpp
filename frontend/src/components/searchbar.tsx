@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import api from "../services/api";
+//import React, { useState } from "react";
+//import api from "../services/api";
 import 'flowbite'
 const SearchBar = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [results, setResults] = useState([]);
-  const [showDropdown, setShowDropdown] = useState(false);
+  //const [searchTerm, setSearchTerm] = useState("");
+  //const [results, setResults] = useState([]);
+  //const [showDropdown, setShowDropdown] = useState(false);
 
   return (
     <div className="relative-group">

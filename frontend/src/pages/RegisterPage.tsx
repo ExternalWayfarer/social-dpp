@@ -6,7 +6,7 @@ const RegisterPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleRegister = async (e) => {
+  const handleRegister = async (e : any) => {
     e.preventDefault();
     // registration logic
     try {
