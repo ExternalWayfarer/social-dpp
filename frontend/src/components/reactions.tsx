@@ -1,5 +1,6 @@
-//import React from "react";
-import { User } from "../types/author";
+import { User} from "../types/author";
+
+
 
 export interface Reaction {
 id: number,
@@ -13,26 +14,46 @@ content_type: number
 
 };
 
+
+
+export const AVAILABLE_REACTIONS = {
+  DISLIKE: "👎",
+  LIKE: "👍",
+  HEART: "❤️",
+  LOL: "😂",
+  CLOWN: "🤡",
+  SHIT: "💩",
+  NEUTRAL: "😐",
+  TEARS: "😭",
+  FEAR: "😱",
+  ANGRY: "😡",
+  FIRE: "🔥",
+};
+
+
+  //grouped reactions
 export interface DisplayReactionGroup {
   type: string;
   emoji: string;
   count: number;
+  users: User[];
   //currentUserReacted?: boolean;
 };
 
 
 
+
+  
+
 export interface ReactionProps {
     reaction: Reaction
 }
 
-const ReactionVisible = ({ reaction }: ReactionProps) => {
-    const { reaction_type_display} = reaction
-    return (
-        <div>
-            {reaction_type_display}
-        </div>
-    );
-};
 
-export default ReactionVisible;
+
+
+
+
+
+
+

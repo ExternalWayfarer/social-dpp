@@ -12,9 +12,9 @@ export default defineConfig({
     strictPort: true, // 5173
   },
   test: {
-    globals: true, // Чтобы использовать describe, it, expect и т.д. без импортов
-    environment: 'jsdom', // Окружение для тестов
-    setupFiles: './src/setupTests.ts', // Опциональный файл для глобальной настройки тестов
-    css: true, // Установите в true или объект настроек, если CSS важен для ваших тестов
+    globals: true,
+    environment: 'jsdom', 
+    setupFiles: './src/setupTests.ts', 
+    css: true, 
   },
 })

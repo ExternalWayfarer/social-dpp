@@ -8,10 +8,9 @@
         "build": "tsc -b && vite build",
         "lint": "eslint .",
         "preview": "vite preview",
-        "test": "vitest", 
-        "test:ui": "vitest --ui", 
+        "test": "vitest",
+        "test:ui": "vitest --ui",
         "coverage": "vitest run --coverage"
-
     },
     "dependencies": {
         "axios": "^1.7.9",
@@ -26,6 +25,7 @@
         "@testing-library/jest-dom": "^6.6.3",
         "@testing-library/react": "^16.3.0",
         "@testing-library/user-event": "^14.6.1",
+        "@types/jest": "^30.0.0",
         "@types/react": "^18.3.12",
         "@types/react-dom": "^18.3.1",
         "@vitejs/plugin-react": "^4.3.4",

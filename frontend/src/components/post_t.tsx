@@ -1,38 +1,20 @@
-import { User } from "../types/author";
+import { PostProps, Post } from "./post";
+import { useState, useEffect } from "react";
+import api from "../services/api";
+import axios from "axios";
 
 
-
-export interface TopicSummary {
-  id: number;
-  name: string;
-}
-
-
-export interface Post {
-  id: number;
-  title: string;
-  body: string;
-  author: User; //  nickname
-  topic: TopicSummary | number | null; // can be an obj, num or null
-  status: string; // 'DF', 'PB', 'AR'
-  published_date: string; // ISO or null
-  time_created_at: string; // ISO?
-  time_updated_at: string; 
-  comments_count: number;
-  rating: number;
-  content_type_id: number;
-}
-
-
-
-export interface PostProps {
-    post: Post
- };
 
 const PostComponent = ({ post }: PostProps) => {
-    const { title, body, author, published_date, comments_count,rating } = post;
+    const { id, title, body, author, published_date, comments_count,rating } = post;
     const theAuthor = author.profile.nickname;
-    
+    const [loadingPost, setLoadingPost] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
+    const [postObject, setPostObject] = useState<Post | null>(null); 
+
+
+
+
     const PostPreview =()=>  {
       const shortBody = body.substring(0,500) + '...\n';
       
@@ -43,8 +25,39 @@ const PostComponent = ({ post }: PostProps) => {
       }
     }
 
+    const fetchPost = async () => {
+      if (!id) {
+        setLoadingPost(false);
+        setError("ID none");
+        return;
+      }
+      setLoadingPost(true);
+      setError(null);
 
-    
+      try {
+        const response = await api.get<Post>(`/posts/${id}`);
+
+        setPostObject(response.data);
+        //console.log(response.data);
+      } catch (err) {
+        console.error("error while loading post:", err);
+        if (axios.isAxiosError(err) && err.response?.status === 404) {
+          setError("post not found");
+        } else {
+          setError("error while loading post:");
+        }
+      } finally {
+        setLoadingPost(false);
+      }
+    };
+
+      useEffect(() => {
+        fetchPost();
+      }, [id]);
+
+ if (loadingPost) {
+    return <p className="mt-16 p-4 text-center">loading post...</p>;
+ }
     return (
         <div className="bg-white shadow-2xl rounded-lg p-6 md:p-10">
             <div>
@@ -61,6 +74,7 @@ const PostComponent = ({ post }: PostProps) => {
               </div>
             </div>
             <div className="mt-4 p-4 text-lg prose max-w-none whitespace-pre-wrap">
+              
               { PostPreview() }
               <p className="p-4 text-blue-600 hover:text-blue-400">Read full 📖</p>
             </div>

@@ -37,7 +37,7 @@ def hello_world(request):
     permission_classes = [AllowAny]
     return Response({'message': 'Hello World!'})
 
-''''''
+'''
 def user(request, pk):
     user= get_object_or_404(Post, pk=pk)
     return render(request, 'miniblog/user_profile.html', {'user': user})
@@ -104,7 +104,7 @@ def search_results(request):
 
     return render(request, 'miniblog/search_results.html', {'post_object':post_object})
 
-
+'''
 
 
 #class UserViewSet(viewsets.ModelViewSet):

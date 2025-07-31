@@ -123,6 +123,10 @@ class PostSerializer(serializers.ModelSerializer):
         read_only=True
     
     )
+    
+    rating=serializers.IntegerField(
+        source='total_rating', 
+        read_only=True)
     #short_body = serializers.CharField(source = 'body')
     content_type_id = serializers.SerializerMethodField()
     class Meta:
@@ -165,8 +169,10 @@ class CommentSerializer(serializers.ModelSerializer):
             'rating',          
             'content_type_id'
         ]
+        
     def get_content_type_id(self, obj):
         return ContentType.objects.get_for_model(obj).pk  
+    
     def get_content_object_str(self, obj): 
         if hasattr(obj, 'content_object') and obj.content_object: 
             return str(obj.content_object)
@@ -194,3 +200,5 @@ class ReactionSerializer(serializers.ModelSerializer):
             return f"{obj.content_type.model}: {obj.content_object}"
         else:
             return None
+    
+

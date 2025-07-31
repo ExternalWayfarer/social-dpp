@@ -7,22 +7,16 @@ class Comment(models.Model):
     # model for a comment, supports nested trees 
 
     post = models.ForeignKey(
-        # ForeignKey: connection between post and comment
         Post,           
-        # if you delete a post, all comments must be also deleted
         on_delete=models.CASCADE,
         # [post].comments.all() will return all comments related to this post
         related_name='comments',  
         verbose_name="Post"
     )
-    # user who posted the comment
     author = models.ForeignKey(
-        # comment and author must be connected
         settings.AUTH_USER_MODEL,
-        # if author was removed, his comments will stay
         on_delete=models.SET_NULL, 
         null=True,
-        # some_user.comments.all() should return all comments of this user
         related_name='comments', 
         verbose_name="Author"
     )
@@ -56,9 +50,8 @@ class Comment(models.Model):
 
     #
     reactions = GenericRelation(
-        # name of the reaction model
         'Reaction',     
-        # some_comment.reactions.all(), Reaction.objects.filter(comment=...)
+        # comment.reactions.all(), Reaction.objects.filter(comment=...)
         related_query_name='comment' 
         
     )

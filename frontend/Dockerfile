@@ -1,4 +1,4 @@
-# Используем Node.js для сборки фронтенда
+# nodejs
 FROM node:20.18.0 AS builder
 
 

@@ -3,16 +3,23 @@ from django.db.models import Count
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from .models import Post, Comment, CustomUser, Topic, Reaction
-from rest_framework import viewsets, generics
+from rest_framework import viewsets, generics, status
+from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, AllowAny
 from rest_framework.exceptions import PermissionDenied, ValidationError
+from rest_framework.decorators import action
 
 
-
+# ------- USER CREATE --------
 
 class UserCreateViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
+    
+    
+
+#--------- POSTS -- ------------
+
 
 class PostViewSet(viewsets.ModelViewSet):
     #queryset = Post.objects.select_related('author__profile').all()
@@ -25,11 +32,14 @@ class PostViewSet(viewsets.ModelViewSet):
         # annotation
         # 'comments' - related_name from  Comment.post to Post
         # if !related_name , then  'comment_set'
-        queryset = queryset.annotate(total_comments=Count('comments')).order_by('-time_created_at') 
+        queryset = queryset.annotate(total_comments=Count('comments'),total_rating=Count('reactions')).order_by('-time_created_at') 
         return queryset
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
         
+#--------- Commenyts -- ------------
+
+
 
 class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
@@ -46,33 +56,44 @@ class CommentViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
     
+    
+#-------- topics-----------------    
 class TopicViewSet(viewsets.ModelViewSet):
     queryset = Topic.objects.all()
     serializer_class = TopicSerializer
     permission_classes = [IsAuthenticatedOrReadOnly] 
     
     
+    
+#--------- Reactions -- ------------
+    
 class ReactionViewSet(viewsets.ModelViewSet):
-    queryset = Reaction.objects.all()
+    #queryset = Reaction.objects.all()
     #queryset = Reaction.objects.all().select_related('user__profile', 'content_type')
     permission_classes = [AllowAny]
     serializer_class = ReactionSerializer 
     
-    '''def get_queryset(self):
-        queryset = Reaction.objects.all()#.select_related('user__profile', 'content_type')
+    
+    def get_queryset(self):
+        queryset = Reaction.objects.all().select_related('user__profile', 'content_type')
         content_type_id = self.request.query_params.get('content_type')
         object_id = self.request.query_params.get('object_id')
+    
         if content_type_id and object_id:
             return queryset.filter(
                 content_type_id=content_type_id,
                 object_id=object_id
             )
         else:
-            return Reaction.objects.none()'''
+            return Reaction.objects.none()
     
-    def perform_create(self, serializer):
+    def create(self, request, *args, **kwargs):
         user = self.request.user
+        
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
+        
         content_type = data["content_type"]
         object_id = data["object_id"]
         new_type = data["reaction_type"]
@@ -86,16 +107,26 @@ class ReactionViewSet(viewsets.ModelViewSet):
         if existing:
             if existing.reaction_type == new_type:
                 existing.delete()
-                raise ValidationError({"detail": "Reaction removed."})
+                return Response(status=status.HTTP_204_NO_CONTENT)
+
             else:
                 existing.reaction_type = new_type
                 existing.save()
-                raise ValidationError({"detail": "Reaction updated."})
+                return Response(
+                    self.get_serializer(existing).data,
+                    status=status.HTTP_200_OK
+                )
         else:
             serializer.save(user=user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
             
             
     def perform_destroy(self, instance):
-        if instance.user != self.request.user and not self.request.user.is_staff:
-            raise PermissionDenied("you have no right.")
+        if instance.user != self.request.user:
+            return Response(
+                {"detail" : "you have no right."},status=status.HTTP_403_FORBIDDEN
+            )
         instance.delete()
+        
+    

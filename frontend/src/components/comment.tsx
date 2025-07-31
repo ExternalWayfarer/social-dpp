@@ -13,6 +13,7 @@ export interface PostComment {
   time_created_at: string; // ISO?
   time_updated_at: string;
   rating: number;
+  content_type_id: number;
   // another fields
 }
 
