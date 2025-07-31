@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import PostComponent from "../components/post_t";
+//import PostComponent from "../components/post_t";
 
 
 
@@ -37,7 +37,6 @@ const PostPage: React.FC = () => {
           
           <p>mesto dalya posta</p>
           <div />
-          <PostComponent post={post} />
         </div>
        
         {/*isModalOpen && <LoginModal onClose={() => setIsModalOpen(false)} />*/}

@@ -1,5 +1,7 @@
 import { User } from "../types/author";
-
+import { useAuth } from "../context/AuthContext";
+import { usePost, useComments, useGroupReactions, useReactions } from "../components/hooks";
+import api from "../services/api";
 
 
 export interface TopicSummary {
@@ -32,19 +34,59 @@ export interface PostProps {
 const PostComponent = ({ post }: PostProps) => {
     const { title, body, author, published_date, comments_count,rating } = post;
     const theAuthor = author.profile.nickname;
-    
-    const PostPreview =()=>  {
-      const shortBody = body.substring(0,500) + '...\n';
-      
-      if (body.split('\n').length>10 || body.length>1000) {
+    /*
+    const { user: currentUser, accessToken} = useAuth();  
+    const { id: postId } = useParams<{ id: string }>();  
+    const { post, loading, error } = usePost(postId);
+    const {comments, loadingComments} = useComments(postId);
+    const [isSubmittingReaction, setIsSubmittingReaction] = useState<boolean>(false);
+    const {allReactions, loadingReactions, currentUserReaction} = useReactions(postId, post, currentUser, isSubmittingReaction)
+    const groupedReactions = useGroupReactions(allReactions);
+
+
+    const handleReactionClick = async (clickedReactionType: string) => {
+      if (
+        !accessToken ||
+        !currentUser ||
+        !post ||
+        typeof post.content_type_id === "undefined" ||
+        isSubmittingReaction
+      ) {
+        if (!accessToken || !currentUser) alert("sign in!");
+
+        return;
+      }
+      setIsSubmittingReaction(true);
+
+      try {
+        await api.post("/reactions/", {
+          reaction_type: clickedReactionType,
+          content_type: post.content_type_id,
+          object_id: post.id,
+        });
+
+        //fetchReactions();
+      } catch (err) {
+        console.error("error sending reaction:", err);
+      } finally {
+        setIsSubmittingReaction(false);
+      }
+    };
+
+*/
+
+    const PostPreview = () => {
+      const shortBody = body.substring(0, 500) + "...\n";
+
+      if (body.split("\n").length > 10 || body.length > 1000) {
         return shortBody;
       } else {
         return body;
       }
-    }
+    };
 
 
-    
+
     return (
         <div className="bg-white shadow-2xl rounded-lg p-6 md:p-10">
             <div>
